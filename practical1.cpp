@@ -61,6 +61,7 @@ int linearSearch(int a[], int n, int key) {
         }
     }
     return -1;
+}
 
 
 
