@@ -61,25 +61,6 @@ int linearSearch(int a[], int n, int key) {
         }
     }
     return -1;
-}
-
-int main() {
-    int n;
-    cin >> n;
-
-    int a[n];
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-    }
-
-    int key;
-    cin >> key;
-
-    int result = linearSearch(a, n, key);
-
-    cout << result;
-    return 0;
-}
 
 
 
