@@ -1,0 +1,88 @@
+//Static linked list
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    int next;
+};
+
+Node arr[5];
+int head = -1;
+int avail = 0;
+
+void init() {
+    for (int i = 0; i < 4; i++)
+        arr[i].next = i + 1;
+    arr[4].next = -1;
+}
+
+int getNode() {
+    if (avail == -1) return -1;
+    int p = avail;
+    avail = arr[avail].next;
+    return p;
+}
+
+void insert(int x) {
+    int p = getNode();
+    if (p == -1) {
+        cout << "Overflow\n";
+        return;
+    }
+    arr[p].data = x;
+    arr[p].next = head;
+    head = p;
+}
+
+void display() {
+    int temp = head;
+    while (temp != -1) {
+        cout << arr[temp].data << " -> ";
+        temp = arr[temp].next;
+    }
+    cout << "NULL\n";
+}
+
+int main() {
+    init();
+    insert(10);
+    insert(20);
+    insert(30);
+    display();
+}
+
+//Dynamic linked list
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* head = NULL;
+
+void insert(int x) {
+    Node* newNode = new Node();
+    newNode->data = x;
+    newNode->next = head;
+    head = newNode;
+}
+
+void display() {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    cout << "NULL\n";
+}
+
+int main() {
+    insert(10);
+    insert(20);
+    insert(30);
+    display();
+}
