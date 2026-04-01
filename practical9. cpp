@@ -1,92 +1,54 @@
 #include <iostream>
 using namespace std;
 
+// Node structure
 struct Node {
     int data;
-    Node* left;
-    Node* right;
+    Node* next;
 };
 
-// Create new node
-Node* createNode(int x) {
+Node* head = NULL;
+
+// Insert at end
+void insert(int value) {
     Node* newNode = new Node();
-    newNode->data = x;
-    newNode->left = newNode->right = NULL;
-    return newNode;
-}
+    newNode->data = value;
+    newNode->next = NULL;
 
-// Insert node
-Node* insert(Node* root, int x) {
-    if (root == NULL)
-        return createNode(x);
-
-    if (x < root->data)
-        root->left = insert(root->left, x);
-    else
-        root->right = insert(root->right, x);
-
-    return root;
-}
-
-// Inorder traversal
-void inorder(Node* root) {
-    if (root != NULL) {
-        inorder(root->left);
-        cout << root->data << " ";
-        inorder(root->right);
+    if (head == NULL) {
+        head = newNode;
+    } else {
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
     }
 }
 
-// Find minimum
-Node* findMin(Node* root) {
-    while (root->left != NULL)
-        root = root->left;
-    return root;
-}
+// Display linked list
+void display() {
+    Node* temp = head;
 
-// Delete node
-Node* deleteNode(Node* root, int key) {
-    if (root == NULL) return root;
-
-    if (key < root->data)
-        root->left = deleteNode(root->left, key);
-    else if (key > root->data)
-        root->right = deleteNode(root->right, key);
-    else {
-        // Case 1: No child
-        if (root->left == NULL && root->right == NULL)
-            return NULL;
-
-        // Case 2: One child
-        else if (root->left == NULL)
-            return root->right;
-        else if (root->right == NULL)
-            return root->left;
-
-        // Case 3: Two children
-        Node* temp = findMin(root->right);
-        root->data = temp->data;
-        root->right = deleteNode(root->right, temp->data);
+    if (temp == NULL) {
+        cout << "List is empty";
+        return;
     }
-    return root;
+
+    while (temp != NULL) {
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    cout << "NULL";
 }
 
 int main() {
-    Node* root = NULL;
+    insert(10);
+    insert(20);
+    insert(30);
 
-    root = insert(root, 50);
-    insert(root, 30);
-    insert(root, 70);
-    insert(root, 20);
-    insert(root, 40);
-
-    cout << "Inorder: ";
-    inorder(root);
-
-    root = deleteNode(root, 30);
-
-    cout << "\nAfter deletion: ";
-    inorder(root);
+    cout << "Linked List: ";
+    display();
 
     return 0;
 }
