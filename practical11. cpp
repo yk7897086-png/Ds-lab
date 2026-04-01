@@ -1,40 +1,53 @@
 #include <iostream>
 #include <stack>
-#include <cctype>
+#include <sstream>
 using namespace std;
+
+// Function to check operator
+bool isOperator(char ch) {
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
+}
+
+// Function to perform operation
+int performOperation(int a, int b, char op) {
+    switch (op) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return a / b;
+    }
+    return 0;
+}
 
 // Function to evaluate postfix expression
 int evaluatePostfix(string exp) {
-    stack<int> s;
+    stack<int> st;
+    stringstream ss(exp);
+    string token;
 
-    for (int i = 0; i < exp.length(); i++) {
-
-        // If operand, push into stack
-        if (isdigit(exp[i])) {
-            s.push(exp[i] - '0');
+    while (ss >> token) {
+        // If number
+        if (!isOperator(token[0])) {
+            st.push(stoi(token));
         }
         else {
-            int val1 = s.top();
-            s.pop();
-            int val2 = s.top();
-            s.pop();
+            int val2 = st.top(); st.pop();
+            int val1 = st.top(); st.pop();
 
-            switch (exp[i]) {
-                case '+': s.push(val2 + val1); break;
-                case '-': s.push(val2 - val1); break;
-                case '*': s.push(val2 * val1); break;
-                case '/': s.push(val2 / val1); break;
-            }
+            int result = performOperation(val1, val2, token[0]);
+            st.push(result);
         }
     }
-    return s.top();
+
+    return st.top();
 }
 
 int main() {
-    string exp = "23*54*+9-";
+    // NOTE: Use space-separated postfix for multi-digit support
+    string exp = "23 5 4 * + 9 -";
 
     cout << "Postfix Expression: " << exp << endl;
-    cout << "Result: " << evaluatePostfix(exp);
+    cout << "Result: " << evaluatePostfix(exp) << endl;
 
     return 0;
 }
